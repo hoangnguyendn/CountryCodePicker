@@ -66,6 +66,7 @@ class _CountryCodePickerState extends State<CountryCodePicker> {
               child: Text(
                 selectedItem.toString(),
                 style: widget.textStyle ?? Theme.of(context).textTheme.button,
+//                style: Theme.of(context).textTheme.display1.color,
               ),
             ),
           ],
