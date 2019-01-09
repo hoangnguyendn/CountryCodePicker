@@ -19,112 +19,113 @@ class _SelectionDialogState extends State<SelectionDialog> {
   List<CountryCode> showedElements = [];
 
   @override
-  Widget build(BuildContext context) =>
-      new SimpleDialog(
-          title: new Column(
-            children: <Widget>[
-              new TextField(
-                style: TextStyle(
-                    fontSize: 17.0, color: Theme.of(context).textTheme.display1.color),
-                decoration: new InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Theme
-                        .of(context)
-                        .textTheme
-                        .display1
-                        .color),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    BorderSide(color: Theme
-                        .of(context)
-                        .textTheme
-                        .display1
-                        .color),
-                  ),
-                  contentPadding: EdgeInsets.all(15.0),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  suffixIcon: Icon(Icons.search, color: Theme
-                      .of(context)
-                      .textTheme
-                      .display1
-                      .color,),),
-                onChanged: _filterElements,
-              ),
-              SizedBox(height: 5.0,)
-            ],
-          ),
-          children: [
-            widget.favoriteElements.isEmpty
-                ? new Container()
-                : new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[]
-                  ..addAll(widget.favoriteElements
-                      .map(
-                        (f) =>
-                    new SimpleDialogOption(
-                      child: Flex(
-                        direction: Axis.horizontal,
-                        children: <Widget>[
-                          Flexible(
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.only(right: 16.0),
-                              child: Image.asset(
-                                f.flagUri,
-                                package: 'country_code_picker',
-                                width: 32.0,
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            fit: FlexFit.tight,
-                            child: new Text(
-                              f.toLongString(),
-                              overflow: TextOverflow.fade,
-                              style: TextStyle(
-                                  color: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .display1
-                                      .color,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        _selectItem(f);
-                      },
+  Widget build(BuildContext context) {
+    double deviceHeight = MediaQuery.of(context).size.height;
+    var result = ListView.builder(
+      shrinkWrap: true,
+      itemCount: showedElements.length,
+      itemBuilder: (context, int index) {
+        return Container(
+          child: SimpleDialogOption(
+            key: Key(showedElements[index].toLongString()),
+            child: Flex(
+              direction: Axis.horizontal,
+              children: <Widget>[
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Image.asset(
+                      showedElements[index].flagUri,
+                      package: 'country_code_picker',
+                      width: 32.0,
                     ),
-                  )
-                      .toList())
-                  ..add(new Divider(
-                    color: Theme
-                        .of(context)
-                        .textTheme
-                        .display1
-                        .color,
-                  ),),),
-          ]
-            ..addAll(showedElements
+                  ),
+                ),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Text(
+                    showedElements[index].toLongString(),
+                    overflow: TextOverflow.fade,
+                    style: TextStyle(
+                        color: Theme
+                            .of(context)
+                            .textTheme
+                            .display1
+                            .color,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            onPressed: () {
+              _selectItem(showedElements[index]);
+            },
+          ),);
+      },
+    );
+
+
+    return SimpleDialog(
+      title: new Column(
+        children: <Widget>[
+          new TextField(
+            style: TextStyle(
+                fontSize: 17.0, color: Theme
+                .of(context)
+                .textTheme
+                .display1
+                .color),
+            decoration: new InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide:
+                BorderSide(color: Theme
+                    .of(context)
+                    .textTheme
+                    .display1
+                    .color),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                BorderSide(color: Theme
+                    .of(context)
+                    .textTheme
+                    .display1
+                    .color),
+              ),
+              contentPadding: EdgeInsets.all(15.0),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              suffixIcon: Icon(Icons.search, color: Theme
+                  .of(context)
+                  .textTheme
+                  .display1
+                  .color,),),
+            onChanged: _filterElements,
+          ),
+          SizedBox(height: 5.0,)
+        ],
+      ),
+      children: [
+        widget.favoriteElements.isEmpty
+            ? new Container()
+            : new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[]
+            ..addAll(widget.favoriteElements
                 .map(
-                  (e) =>
+                  (f) =>
               new SimpleDialogOption(
-                key: Key(e.toLongString()),
                 child: Flex(
                   direction: Axis.horizontal,
                   children: <Widget>[
                     Flexible(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
+                        padding:
+                        const EdgeInsets.only(right: 16.0),
                         child: Image.asset(
-                          e.flagUri,
+                          f.flagUri,
                           package: 'country_code_picker',
                           width: 32.0,
                         ),
@@ -132,8 +133,8 @@ class _SelectionDialogState extends State<SelectionDialog> {
                     ),
                     Flexible(
                       fit: FlexFit.tight,
-                      child: Text(
-                        e.toLongString(),
+                      child: new Text(
+                        f.toLongString(),
                         overflow: TextOverflow.fade,
                         style: TextStyle(
                             color: Theme
@@ -148,11 +149,26 @@ class _SelectionDialogState extends State<SelectionDialog> {
                   ],
                 ),
                 onPressed: () {
-                  _selectItem(e);
+                  _selectItem(f);
                 },
               ),
             )
-                .toList()));
+                .toList())
+            ..add(new Divider(
+              color: Theme
+                  .of(context)
+                  .textTheme
+                  .display1
+                  .color,
+            ),),),
+        Container(
+          height: deviceHeight * 0.4,
+          child: result,
+        )
+      ],
+    );
+  }
+
 
   @override
   void initState() {
