@@ -163,7 +163,7 @@ class _SelectionDialogState extends State<SelectionDialog> {
             ),),),
         Container(
           height: deviceHeight * 0.4,
-          width: 200.0
+          width: 200.0,
           child: result,
         )
       ],
